@@ -79,7 +79,7 @@ object SpecificJavaTreehugger extends JavaTreehugger {
 
     // Avro's SpecificCompiler only writes files, but we need a string
     // so write the Java file and read
-    val outDir = System.getProperty("java.io.tmpdir")
+    val outDir = "target/java_avro" // System.getProperty("java.io.tmpdir")
     writeJavaTempFile(namespace, schema, outDir)
     val tempPath = outDir + "/" + schema.getFullName.replace('.','/') + ".java"
     val tempFile = new File(tempPath)
