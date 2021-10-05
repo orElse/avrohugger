@@ -1,7 +1,7 @@
 # avrohugger
 
 
-[![Travis CI](https://travis-ci.org/julianpeeters/avrohugger.svg?branch=master)](https://travis-ci.org/julianpeeters/avrohugger)
+[![Scala CI](https://github.com/julianpeeters/avrohugger/workflows/Scala%20CI/badge.svg)](https://github.com/julianpeeters/avrohugger/actions?query=workflow%3A%22Scala+CI%22)
 [![Join the chat at https://gitter.im/julianpeeters/avrohugger](https://badges.gitter.im/julianpeeters/avrohugger.svg)](https://gitter.im/julianpeeters/avrohugger?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.julianpeeters/avrohugger-core_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.julianpeeters/avrohugger-core_2.12)
 
@@ -17,7 +17,7 @@
 * **maven**: `avrohugger-maven-plugin` - Generate source code at compile time with a maven plugin [found here](https://github.com/makubi/avrohugger-maven-plugin).
 * **gradle**: `gradle-avrohugger-plugin` - Generate source code at compile time with a gradle plugin [found here](https://github.com/zladovan/gradle-avrohugger-plugin).
 * **on the web**: `avro2caseclass` - Generate source code from a web app, [found here](https://github.com/julianpeeters/avro2caseclass).
-* **freestyle-rpc**: `sbt-frees-rpc-idlgen` - Generate rpc models, messages, clients, and servers [found here](http://frees.io/docs/rpc/idl-generation).
+* **mu-rpc**: `mu-scala` - Generate rpc models, messages, clients, and servers [found here](https://github.com/higherkindness/mu-scala).
 
 Table of contents
 =================
@@ -46,7 +46,7 @@ Table of contents
 ##### Generates Scala case classes in various formats:
 
 * `Standard` Vanilla case classes (for use with Apache Avro's [`GenericRecord`
-API](http://avro.apache.org/docs/1.8.1/gettingstartedjava.html#Serializing+and+deserializing+without+code+generation), etc.)
+API](http://avro.apache.org/docs/1.9.1/gettingstartedjava.html#Serializing+and+deserializing+without+code+generation), etc.)
 
 * `SpecificRecord` Case classes that implement `SpecificRecordBase` and
 therefore have mutable `var` fields (for use with the Avro Specific API -
@@ -112,9 +112,9 @@ _Note:_ Currently [Treehugger](http://eed3si9n.com/treehugger/comments.html#Scal
 
 ## Usage
 
-* **Library For Scala 2.10, 2.11, and 2.12**
-* **Parses Schemas and IDLs with Avro version 1.8**
-* **Generates Code Compatible with Scala 2.10, 2.11, 2.12**
+* **Library For Scala 2.12, and 2.13**
+* **Parses Schemas and IDLs with Avro version 1.9**
+* **Generates Code Compatible with Scala 2.12, 2.13**
 
 
 
@@ -122,7 +122,7 @@ _Note:_ Currently [Treehugger](http://eed3si9n.com/treehugger/comments.html#Scal
 
 ##### Get the dependency with:
 
-    "com.julianpeeters" %% "avrohugger-core" % "1.0.0-RC18"
+    "com.julianpeeters" %% "avrohugger-core" % "1.0.0-RC24"
 
 
 ##### Description:
@@ -178,7 +178,7 @@ To reassign Scala types to Avro types, use the following (e.g. for customizing `
 * `union` can be assigned to  `OptionShapelessCoproduct`, `OptionEitherShapelessCoproduct`, or `OptionalShapelessCoproduct`
 * `int`, `long`, `float`, `double` can be assigned to `ScalaInt`, `ScalaLong`, `ScalaFloat`, `ScalaDouble`
 * `protocol` can be assigned to `ScalaADT` and `NoTypeGenerated`
-* `decimal` can be assigned to `ScalaBigDecimal` and `ScalaBigDecimalWithPrecision` (via Shapeless Tagged Types)
+* `decimal` can be assigned to e.g. `ScalaBigDecimal(Some(BigDecimal.RoundingMode.HALF_EVEN))` and `ScalaBigDecimalWithPrecision(None)` (via Shapeless Tagged Types)
 
 ##### Customizable Namespace Mapping:
 
@@ -209,7 +209,7 @@ Generate simple classes instead of case classes when fields.size > 22, useful fo
 
 ##### Get the dependency with:
 
-    "com.julianpeeters" %% "avrohugger-filesorter" % "1.0.0-RC18"
+    "com.julianpeeters" %% "avrohugger-filesorter" % "1.0.0-RC24"
     
 
 ##### Description:
@@ -229,22 +229,22 @@ To ensure dependent schemas are compiled in the proper order (thus avoiding `org
 #### `avrohugger-tools`
 
 
-  Download the avrohugger-tools jar for Scala [2.10](https://search.maven.org/remotecontent?filepath=com/julianpeeters/avrohugger-tools_2.10/1.0.0-RC18/avrohugger-tools_2.10-1.0.0-RC18-assembly.jar), Scala [2.11](https://search.maven.org/remotecontent?filepath=com/julianpeeters/avrohugger-tools_2.11/1.0.0-RC18/avrohugger-tools_2.11-1.0.0-RC18-assembly.jar), or Scala [2.12](https://search.maven.org/remotecontent?filepath=com/julianpeeters/avrohugger-tools_2.12/1.0.0-RC18/avrohugger-tools_2.12-1.0.0-RC18-assembly.jar) (>30MB!) and use it like the avro-tools jar `Usage: [-string] (schema|protocol|datafile) input... outputdir`:
+  Download the avrohugger-tools jar for Scala [2.10](https://search.maven.org/remotecontent?filepath=com/julianpeeters/avrohugger-tools_2.10/1.0.0-RC24/avrohugger-tools_2.10-1.0.0-RC24-assembly.jar), Scala [2.11](https://search.maven.org/remotecontent?filepath=com/julianpeeters/avrohugger-tools_2.11/1.0.0-RC24/avrohugger-tools_2.11-1.0.0-RC24-assembly.jar), or Scala [2.12](https://search.maven.org/remotecontent?filepath=com/julianpeeters/avrohugger-tools_2.12/1.0.0-RC24/avrohugger-tools_2.12-1.0.0-RC24-assembly.jar) (>30MB!) and use it like the avro-tools jar `Usage: [-string] (schema|protocol|datafile) input... outputdir`:
 
 
 * `generate` generates Scala case class definitions:
 
-`java -jar /path/to/avrohugger-tools_2.12-1.0.0-RC18-assembly.jar generate schema user.avsc . `
+`java -jar /path/to/avrohugger-tools_2.12-1.0.0-RC24-assembly.jar generate schema user.avsc . `
 
 
 * `generate-specific` generates definitions that extend Avro's `SpecificRecordBase`:
 
-`java -jar /path/to/avrohugger-tools_2.12-1.0.0-RC18-assembly.jar generate-specific schema user.avsc . `
+`java -jar /path/to/avrohugger-tools_2.12-1.0.0-RC24-assembly.jar generate-specific schema user.avsc . `
 
 
 * `generate-scavro` generates definitions that extend Scavro's `AvroSerializable`:
 
-`java -jar /path/to/avrohugger-tools_2.12-1.0.0-RC18-assembly.jar generate-scavro schema user.avsc . `
+`java -jar /path/to/avrohugger-tools_2.12-1.0.0-RC24-assembly.jar generate-scavro schema user.avsc . `
 
 
 ## Warnings
@@ -327,6 +327,11 @@ Contributors:
 - [Francisco Díaz](https://github.com/franciscodr)
 - [Kostya Golikov](https://github.com/lazyval)
 - [Rob Landers](https://github.com/withinboredom)
+- [Bobby Rauchenberg](https://github.com/bobbyrauchenberg)
+- [Plínio Pantaleão](https://github.com/plinioj)
+- [Simon Petty](https://github.com/simonpetty)
+- [Leonard Ehrenfried](https://github.com/leonardehrenfried)
+- [Sietse de Kaper](https://github.com/targeter)
 
 ##### Criticism is appreciated.
 

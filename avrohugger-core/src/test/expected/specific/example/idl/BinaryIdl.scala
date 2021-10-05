@@ -3,7 +3,7 @@ package example.idl
 
 import scala.annotation.switch
 
-case class BinaryIdl(var data: Array[Byte]) extends org.apache.avro.specific.SpecificRecordBase {
+final case class BinaryIdl(var data: Array[Byte]) extends org.apache.avro.specific.SpecificRecordBase {
   def this() = this(null)
   def get(field$: Int): AnyRef = {
     (field$: @switch) match {
@@ -18,7 +18,10 @@ case class BinaryIdl(var data: Array[Byte]) extends org.apache.avro.specific.Spe
       case 0 => this.data = {
         value match {
           case (buffer: java.nio.ByteBuffer) => {
-            buffer.array()
+            val dup = buffer.duplicate()
+            val array = new Array[Byte](dup.remaining)
+            dup.get(array)
+            array
           }
         }
       }.asInstanceOf[Array[Byte]]

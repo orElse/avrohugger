@@ -70,7 +70,10 @@ object StandardImporter extends Importer {
         schema.getType == Schema.Type.BYTES && LogicalType.foldLogicalTypes(
           schema = schema,
           default = false) {
-          case Decimal(_, _) if typeMatcher.avroScalaTypes.decimal == ScalaBigDecimalWithPrecision => true
+            case Decimal(_, _) => typeMatcher.avroScalaTypes.decimal match {
+              case ScalaBigDecimal(_) => false
+              case ScalaBigDecimalWithPrecision(_) => true
+            }
         }
       }.map(_ => List("tag.@@")).getOrElse(Nil)
 
@@ -88,8 +91,8 @@ object StandardImporter extends Importer {
         (unionTypes.length > maxNonNullTypes     && !unionTypes.exists(unionContainsNull)) ||
         (unionTypes.length > maxNonNullTypes + 1 &&  unionTypes.exists(unionContainsNull))
       def defaultValueTest(field: Schema.Field, unionTypes: List[Schema], maxNonNullTypes: Int) =
-        (unionTypes.length > maxNonNullTypes     && !unionTypes.exists(unionContainsNull) && field.defaultValue != null) ||
-        (unionTypes.length > maxNonNullTypes + 1 &&  unionTypes.exists(unionContainsNull) && field.defaultValue != null)
+        (unionTypes.length > maxNonNullTypes     && !unionTypes.exists(unionContainsNull) && field.hasDefaultValue) ||
+        (unionTypes.length > maxNonNullTypes + 1 &&  unionTypes.exists(unionContainsNull) && field.hasDefaultValue)
       val unionTypes = unionSchema.getTypes.asScala.toList
       val isShapelessCoproduct: Boolean = shapelessCoproductTest(unionTypes, thresholdNonNullTypes)
       val hasDefaultValue: Boolean = defaultValueTest(field, unionTypes, thresholdNonNullTypes)
